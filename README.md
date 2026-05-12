@@ -11,7 +11,7 @@
 
 ## Usage
 
-### Basic scan
+### Basic scan (own repo)
 
 ```yaml
 name: Skill Security Scan
@@ -30,6 +30,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: W3OSC/skill-warden-action@v1
+```
+
+### Scan a remote skill repo
+
+```yaml
       - uses: W3OSC/skill-warden-action@v1
         with:
           target: ${{ github.repository }}
@@ -59,7 +65,7 @@ jobs:
 
 | Input | Description | Default |
 |-------|-------------|---------|
-| `target` | GitHub URL, `owner/repo`, or local path to scan | **required** |
+| `target` | GitHub URL, `owner/repo`, or local path to scan | `${{ github.workspace }}` |
 | `output-format` | Output format: `pretty`, `json`, or `sarif` | `sarif` |
 | `sarif-file` | Path for SARIF output file | `skill-warden-results.sarif` |
 | `fail-on-advisory` | Exit code 2 (fail) if advisory violations found | `false` |
