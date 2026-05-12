@@ -1,0 +1,100 @@
+name: 'skill-warden'
+description: 'Scan GitHub Copilot skills for security threats - prompt injection, jailbreaks, secret grabbing, and more'
+author: 'W3OSC'
+branding:
+  icon: 'shield'
+  color: 'red'
+
+inputs:
+  target:
+    description: 'GitHub URL or local path to skill(s) to scan'
+    required: true
+  output-format:
+    description: 'Output format: pretty, json, sarif'
+    default: 'sarif'
+  sarif-file:
+    description: 'Path to write SARIF output file'
+    default: 'skill-warden-results.sarif'
+  fail-on-advisory:
+    description: 'Fail the action if advisory violations are found'
+    default: 'false'
+  github-token:
+    description: 'GitHub token for private repositories'
+    default: ${{ github.token }}
+  upload-sarif:
+    description: 'Upload SARIF results to GitHub Security tab'
+    default: 'true'
+  no-quality:
+    description: 'Skip quality checks'
+    default: 'false'
+  no-ai-score:
+    description: 'Skip AI slop scoring'
+    default: 'false'
+
+outputs:
+  hard-passed:
+    description: 'Whether all hard security checks passed (true/false)'
+    value: ${{ steps.scan.outputs.hard-passed }}
+  has-advisories:
+    description: 'Whether advisory violations were found (true/false)'
+    value: ${{ steps.scan.outputs.has-advisories }}
+  sarif-file:
+    description: 'Path to the SARIF output file'
+    value: ${{ inputs.sarif-file }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install skill-warden
+      shell: bash
+      run: |
+        pip install skill-warden --quiet
+
+    - name: Run skill-warden scan
+      id: scan
+      shell: bash
+      run: |
+        EXIT_CODE=0
+
+        ARGS=""
+        if [ "${{ inputs.fail-on-advisory }}" = "true" ]; then
+          ARGS="$ARGS --fail-on-advisory"
+        fi
+        if [ "${{ inputs.no-quality }}" = "true" ]; then
+          ARGS="$ARGS --no-quality"
+        fi
+        if [ "${{ inputs.no-ai-score }}" = "true" ]; then
+          ARGS="$ARGS --no-ai-score"
+        fi
+
+        skill-warden scan "${{ inputs.target }}" \
+          --output sarif \
+          --output-file "${{ inputs.sarif-file }}" \
+          --github-token "${{ inputs.github-token }}" \
+          $ARGS || EXIT_CODE=$?
+
+        # Also run pretty output for the Actions log
+        skill-warden scan "${{ inputs.target }}" \
+          --output pretty \
+          --github-token "${{ inputs.github-token }}" \
+          --no-quality --no-ai-score 2>/dev/null || true
+
+        if [ $EXIT_CODE -eq 0 ]; then
+          echo "hard-passed=true" >> $GITHUB_OUTPUT
+          echo "has-advisories=false" >> $GITHUB_OUTPUT
+        elif [ $EXIT_CODE -eq 2 ]; then
+          echo "hard-passed=true" >> $GITHUB_OUTPUT
+          echo "has-advisories=true" >> $GITHUB_OUTPUT
+        else
+          echo "hard-passed=false" >> $GITHUB_OUTPUT
+          echo "has-advisories=true" >> $GITHUB_OUTPUT
+        fi
+
+        exit $EXIT_CODE
+
+    - name: Upload SARIF to GitHub Security tab
+      if: inputs.upload-sarif == 'true' && always()
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: ${{ inputs.sarif-file }}
+        category: skill-warden

@@ -1,0 +1,31 @@
+# Byte-compiled
+__pycache__/
+*.py[cod]
+
+# Distribution
+dist/
+build/
+*.egg-info/
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Test artifacts
+*.sarif
+coverage.xml
+.coverage
+.pytest_cache/
+
+# Secrets
+secrets.yaml
+.env.local
