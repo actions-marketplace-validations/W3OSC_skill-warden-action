@@ -7,8 +7,9 @@ branding:
 
 inputs:
   target:
-    description: 'GitHub URL or local path to skill(s) to scan'
-    required: true
+    description: 'GitHub URL or local path to skill(s) to scan. Defaults to the repository root.'
+    required: false
+    default: ${{ github.workspace }}
   output-format:
     description: 'Output format: pretty, json, sarif'
     default: 'sarif'
