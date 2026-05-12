@@ -110,6 +110,16 @@ jobs:
           exit 1
 ```
 
+## Verified Badge
+
+Once your skill repo passes clean, add this to your README to signal it has been scanned:
+
+[![skill-warden](https://img.shields.io/badge/skill--warden-safe-brightgreen?style=flat-square&logo=shield)](https://github.com/W3OSC/skill-warden)
+
+```markdown
+[![skill-warden](https://img.shields.io/badge/skill--warden-safe-brightgreen?style=flat-square&logo=shield)](https://github.com/W3OSC/skill-warden)
+```
+
 ## Detection Summary
 
 | Detector | Severity | Type |
