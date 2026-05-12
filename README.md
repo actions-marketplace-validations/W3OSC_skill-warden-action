@@ -1,13 +1,13 @@
 # skill-warden-action
 
-> GitHub Action for [skill-warden](https://github.com/W3OSC/skill-warden) - security scanner for GitHub Copilot skills.
+> GitHub Action for [skill-warden](https://github.com/W3OSC/skill-warden) - security scanner for AI skills.
 
 [![skill-warden](https://img.shields.io/badge/powered%20by-skill--warden-blueviolet?style=flat-square)](https://github.com/W3OSC/skill-warden)
 [![W3OSC](https://img.shields.io/badge/W3OSC-initiative-purple?style=flat-square)](https://github.com/W3OSC)
 
 ## Overview
 
-`skill-warden-action` runs the `skill-warden` security scanner in your GitHub Actions workflow. It detects prompt injection, jailbreak attempts, secret grabbing, token smuggling, and more in Copilot skill repositories - and uploads results directly to the GitHub Security tab via SARIF.
+`skill-warden-action` runs the `skill-warden` security scanner in your GitHub Actions workflow. It detects prompt injection, jailbreak attempts, secret grabbing, token smuggling, and more in AI skill repositories - and uploads results directly to the GitHub Security tab via SARIF.
 
 ## Usage
 

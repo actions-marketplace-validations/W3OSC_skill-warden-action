@@ -1,5 +1,5 @@
 name: 'skill-warden'
-description: 'Scan GitHub Copilot skills for security threats - prompt injection, jailbreaks, secret grabbing, and more'
+description: 'Scan AI skills for security threats - prompt injection, jailbreaks, secret grabbing, and more'
 author: 'W3OSC'
 branding:
   icon: 'shield'
