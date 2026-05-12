@@ -112,13 +112,13 @@ jobs:
 
 ## Verified Badge
 
-Once your skill repo passes clean, add this to your README to signal it has been scanned:
-
-[![skill-warden](https://img.shields.io/badge/skill--warden-safe-brightgreen?style=flat-square&logo=shield)](https://github.com/W3OSC/skill-warden)
+Add this to your README - it reflects the actual live scan status, not a static label:
 
 ```markdown
-[![skill-warden](https://img.shields.io/badge/skill--warden-safe-brightgreen?style=flat-square&logo=shield)](https://github.com/W3OSC/skill-warden)
+![Skill Security Scan](https://github.com/OWNER/REPO/actions/workflows/skill-warden.yml/badge.svg)
 ```
+
+Replace `OWNER/REPO` and the workflow filename if different. The badge goes red the moment a hard violation is detected.
 
 ## Detection Summary
 
